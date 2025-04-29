@@ -1,50 +1,107 @@
-
-EXP NO:1 C PROGRAM FOR ARRAY OF STRUCTURE TO CHECK ELIGIBILITY FOR THE VACCINE.
-
+EXP NO:8 C PROGRAM TO PRINT ALL OF ITS PERMUTATIONS IN STRICT LEXICOGRAPHICAL ORDER.
 Aim:
-To write a C program for array of structure to check eligibility for the vaccine person age above 6 years of age.
+To write a C program to print all of its permutations in strict lexicographical order.
 
 Algorithm:
-1.	Declare structure eligible with age (integer) and n (character array)
-2.	Declare variable e of type eligible
-3.	Input age and name using scanf, store in e
-4.	If e.age <= 6
--	Print "Vaccine Eligibility: No"
-Else
--	Print "Vaccine Eligibility: Yes"
-5.	Print details (e.age, e.n)
-6.	Return 0
+1.	Start
+2.	Declare variables s (pointer to an array of strings) and n (number of strings)
+
+3.	Memory Allocation
+Dynamically allocate memory for s to store an array of strings
+4.	Input
+Read the number of strings n from the user Dynamically allocate memory for each string in s
+5.	Permutation Generation Loop
+6.	Memory Deallocation
+Free the memory allocated for each string in s Free the memory allocated for s
+7.	End
  
 Program:
-```
-#include <stdio.h>
 
-struct eligible {
-    int age;
-    char n[50];
-};
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+void swap(char *x, char *y) {
+    char temp = *x;
+    *x = *y;
+    *y = temp;
+}
+
+
+int cmpfunc(const void *a, const void *b) {
+    return (*(char *)a - *(char *)b);
+}
+
+
+void reverse(char *s, int i, int j) {
+    while (i < j) {
+        swap(&s[i], &s[j]);
+        i++;
+        j--;
+    }
+}
+
+int next_permutation(char *s, int len) {
+    int i = len - 2;
+    while (i >= 0 && s[i] >= s[i + 1])
+        i--;
+    if (i < 0)
+        return 0;
+
+    int j = len - 1;
+    while (s[j] <= s[i])
+        j--;
+
+    swap(&s[i], &s[j]);
+    reverse(s, i + 1, len - 1);
+    return 1;
+}
 
 int main() {
-    struct eligible e;
-    scanf("%s", e.n);
-    scanf("%d", &e.age);
+    char *s;
+    int len;
 
-    if (e.age <= 6)
-        printf("Vaccine Eligibility: No\n");
-    else
-        printf("Vaccine Eligibility: Yes\n");
+    // Step 3: Memory allocation
+    s = (char *)malloc(100 * sizeof(char));
+    if (s == NULL) {
+        printf("Memory allocation failed.\n");
+        return 1;
+    }
 
-    printf("Name: %s\nAge: %d\n", e.n, e.age);
+    printf("Enter a string: ");
+    scanf("%s", s);
+
+    len = strlen(s);
+
+    qsort(s, len, sizeof(char), cmpfunc);
+
+    printf("%s\n", s);
+
+    while (next_permutation(s, len)) {
+        printf("%s\n", s);
+    }
+
+    free(s);
 
     return 0;
 }
 
-```
+
+
+
 
 Output:
 
-![image](https://github.com/user-attachments/assets/d90f8b5e-a95b-42a8-a1c2-07459f981979)
+
+
+![image](https://github.com/user-attachments/assets/17d188fd-1813-4797-8b53-1ed89203e9ed)
+
+
+
+
+
 
 
 Result:
-Thus, the program is verified successfully. 
+Thus, the program is verified successfully
